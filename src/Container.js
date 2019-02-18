@@ -1,11 +1,29 @@
 import React, { Fragment, useState } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
 import TextArea from "./Textarea.js";
 
-const Container = () => {
+import { setNote } from "./redux/action/index";
+
+const mapStateToProps = state => {
+  return {
+    note: state.items.note
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchActionSetNote: payload =>
+      dispatch(setNote(payload)),
+  }
+}
+
+const Container = props => {
   const [isValue, setIsValue ] = useState(null);
 
   const handleSubmit = () => {
-    console.log('dispatch this value to redux: ', isValue);
+    props.dispatchActionSetNote(isValue);
   }
 
   const handleDispatch = note => {
@@ -20,4 +38,7 @@ const Container = () => {
   )
 }
 
-export default Container;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Container);
